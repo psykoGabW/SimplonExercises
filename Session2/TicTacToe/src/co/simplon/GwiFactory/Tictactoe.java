@@ -16,7 +16,7 @@ class Tictactoe {
 
 	// Keep last action in order to test only row, column and diagonals concerned
 
-	private static boolean currentPlayerIsWinning(int currentPlayerID, CaseCoordinate userMove, int[][] gameArea) {
+	private static boolean currentPlayerIsWinning(int currentPlayerID, CaseCoordinates userMove, int[][] gameArea) {
 
 		if (userMove == null) {
 			return false;
@@ -92,53 +92,31 @@ class Tictactoe {
 	 * Argument : ID of current player Return : Position wanted by the player
 	 * (%column%line) with %column (char) %line (int) Example: Upperleft corner : A1
 	 */
-	private static CaseCoordinate getPlayerChoice(int playerID, int[][] gameArea) {
+	private static CaseCoordinates getPlayerChoice(int playerID, int[][] gameArea) {
 
-		CaseCoordinate userChoice = new CaseCoordinate();
-		boolean inputIsOK = false;
+		CaseCoordinates userChoice = new CaseCoordinates();
+		boolean inputIsOK;
 		do {
 			String userInput = "";
-			do {
 
-				System.out.println((playerID == PLAYER_ONE_ID ? "Player One (" + DISPLAY_TOKEN_PLAYER_1 + ") move : "
-						: "Player Two (" + DISPLAY_TOKEN_PLAYER_2 + ") move : "));
+			System.out.println((playerID == PLAYER_ONE_ID ? "Player One (" + DISPLAY_TOKEN_PLAYER_1 + ") move : "
+					: "Player Two (" + DISPLAY_TOKEN_PLAYER_2 + ") move : "));
 
-				userInput = scan.nextLine();
-				userInput = userInput.trim().toUpperCase();
-				if (userInput.length() != 2) {
-					userInput = "";
-				} else {
-					if ((userInput.charAt(0) < 'A' || userInput.charAt(0) > 'A' + (GAME_AREA_WIDTH - 1)) ||
-							(userInput.charAt(1) < '1' || userInput.charAt(1) > '1' + (GAME_AREA_WIDTH - 1))) {
-						userInput = "";
-					}
-				}
-				if (userInput == "") {
-					System.out.println("Input is not valid ! Please make a choice in game area.");
-					System.out.println("Format expected : ColumnRow");
-					System.out.println("Example : A2");
-					displayGameArea(gameArea);
+			userInput = scan.nextLine();
 
-				}
-			} while (userInput == "");
-			userChoice.setCaseCoordinate(userInput);
-			inputIsOK = userChoice.isCorrectMove(gameArea);
+			try {
+				userChoice.setCaseCoordinates(userInput, gameArea);
+				inputIsOK = true;
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+				inputIsOK = false;
+				displayGameArea(gameArea);
 
-			if (!inputIsOK) {
-				System.out.println("Your move is not allowed ! This position is not free...");
 			}
 
 		} while (!inputIsOK);
 
 		return userChoice;
-
-	}
-
-	private static void markPlayerChoice(int playerID, CaseCoordinate userMove, int[][] gameArea) {
-
-		if (userMove.isCorrectMove(gameArea)) {
-			gameArea[userMove.getColumnIndex()][userMove.getRowIndex()] = playerID;
-		}
 
 	}
 
@@ -153,8 +131,8 @@ class Tictactoe {
 
 		do {
 			displayGameArea(gameArea);
-			CaseCoordinate userMove = getPlayerChoice(currentPlayer, gameArea);
-			markPlayerChoice(currentPlayer, userMove, gameArea);
+			CaseCoordinates userMove = getPlayerChoice(currentPlayer, gameArea);
+			userMove.markPlayerChoice(currentPlayer);
 			currentPlayerWin = currentPlayerIsWinning(currentPlayer, userMove, gameArea);
 			if (!currentPlayerWin) {
 				currentPlayer *= -1;

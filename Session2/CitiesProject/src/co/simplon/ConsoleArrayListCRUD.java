@@ -11,21 +11,24 @@ import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Scanner;
 
-public class ConsoleArrayCRUD {
+public class ConsoleArrayListCRUD {
 	private static NumberFormat numberFormat = NumberFormat.getInstance(Locale.FRENCH);
 	public static final String TEMP_DIR = "tempfiles";
 
-	private static City[] cities;
+	// private static City[] cities;
+	private static ArrayList<City> cities;
 
 	private static String cityToString(City city) {
 		return city.getName() + ";" + numberFormat.format(city.getLatitude())
 				+ ";" + numberFormat.format(city.getLongitude());
 	}
 
-	private static void printCities(City[] cities) {
+	private static void printCities(ArrayList<City> cities) {
 		for (City city : cities) {
 			System.out.println(cityToString(city));
 		}
@@ -33,8 +36,9 @@ public class ConsoleArrayCRUD {
 
 	private static int findIdxByName(String name) throws IOException {
 		int res = -1;
-		for (int i = 0; i != cities.length && (res == -1); ++i) {
-			if (cities[i].getName().equalsIgnoreCase(name)) {
+
+		for (int i = 0; i != cities.size() && (res == -1); ++i) {
+			if (cities.get(i).getName().equalsIgnoreCase(name)) {
 				res = i;
 			}
 		}
@@ -43,11 +47,13 @@ public class ConsoleArrayCRUD {
 
 	private static City findByName(String name) throws IOException {
 		int idx = findIdxByName(name);
-		return idx == -1 ? null : cities[idx];
+		return idx == -1 ? null : cities.get(idx);
 	}
 
 	private static void createCity(City city) throws IOException {
-		cities = add(cities, city);
+		// cities= add(cities, city);
+		cities.add(city);
+
 	}
 
 	private static void chrono(long start) {
@@ -55,7 +61,6 @@ public class ConsoleArrayCRUD {
 	}
 
 	private static void bench(long nb) throws IOException {
-		System.out.println("Bench mark times");
 		long start = System.nanoTime();
 		for (int i = 0; i != nb; ++i) {
 			findByName("Rouen");
@@ -91,12 +96,7 @@ public class ConsoleArrayCRUD {
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		String fileName = args.length > 0 ? args[0] : "NameLatLong.txt";
 		Path filePath = Paths.get(fileName);
-
-		System.out.println("Read cities Time : ");
-		long startTime = System.nanoTime();
 		cities = readCities(filePath);
-		chrono(startTime);
-
 		if (args.length > 1) {
 			bench(Long.parseLong(args[1]));
 			return;
@@ -148,7 +148,7 @@ public class ConsoleArrayCRUD {
 			case 4: {
 				String name = input.nextLine();
 				double d = input.nextDouble();
-				City[] res = nearCity(name, d);
+				ArrayList<City> res = nearCity(name, d);
 				printCities(res);
 				input.nextLine(); // flush line break
 				break;
@@ -159,7 +159,7 @@ public class ConsoleArrayCRUD {
 				input.nextLine(); // flush line break
 				String name2 = input.nextLine();
 				double d2 = input.nextDouble();
-				City[] res = nearCities(name1, d1, name2, d2);
+				ArrayList<City> res = nearCities(name1, d1, name2, d2);
 				printCities(res);
 				input.nextLine(); // flush line break
 				break;
@@ -188,21 +188,23 @@ public class ConsoleArrayCRUD {
 		writeCities(cities, filePath);
 	}
 
-	private static City[] readCities(Path filePath) throws IOException {
-		City[] res = new City[0];
+	private static ArrayList<City> readCities(Path filePath) throws IOException {
+		ArrayList<City> res = new ArrayList<City>();
 		try (BufferedReader br = Files.newBufferedReader(filePath)) {
 			br.readLine(); // skip header
 			for (String line = br.readLine(); line != null; line = br.readLine()) {
 				City tmp = readCity(line);
 				if (tmp != null) {
-					res = add(res, tmp);
+
+					add(res, tmp);
 				}
 			}
 		}
+		Collections.sort(res);
 		return res;
 	}
 
-	private static void writeCities(City[] cities, Path filePath) throws IOException {
+	private static void writeCities(ArrayList<City> cities, Path filePath) throws IOException {
 		Path tempDir = Files.createTempDirectory(TEMP_DIR);
 		Path tempFile = Files.createTempFile(tempDir, TEMP_DIR, ".tmp");
 		try (BufferedWriter writer = Files.newBufferedWriter(tempFile, StandardCharsets.UTF_8,
@@ -211,7 +213,12 @@ public class ConsoleArrayCRUD {
 				writer.write(cityToString(city) + "\n");
 			}
 		}
+		try {
 		Files.move(tempFile, filePath, StandardCopyOption.ATOMIC_MOVE);
+		} catch (Exception e) {
+		// ATOMIC_MOVE is only efficient if source & destination files are on the same disk
+		Files.move(tempFile, filePath, StandardCopyOption.REPLACE_EXISTING);
+		}
 	}
 
 	private static boolean updateCity(String name, double lat, double lon) throws IOException {
@@ -219,7 +226,9 @@ public class ConsoleArrayCRUD {
 		if (idx == -1) {
 			return false;
 		}
-		cities[idx] = new City(name, lat, lon);
+		// cities.get[idx]= new City(name, lat, lon);
+		cities.remove(idx);
+		cities.add(idx, new City(name, lat, lon));
 		return true;
 	}
 
@@ -228,16 +237,16 @@ public class ConsoleArrayCRUD {
 		if (idx == -1) {
 			return false;
 		}
-		cities = remove(cities, idx);
+		remove(cities, idx);
 		return true;
 	}
 
-	private static City[] nearCities(String name1, double d1, String name2, double d2) throws IOException {
-		City[] res = new City[0];
+	private static ArrayList<City> nearCities(String name1, double d1, String name2, double d2) throws IOException {
+		ArrayList<City> res = new ArrayList<City>();
 		for (City nearCity1 : nearCity(name1, d1)) {
 			for (City nearCity2 : nearCity(name2, d2)) {
 				if (nearCity1.equals(nearCity2)) {
-					res = add(res, nearCity1);
+					add(res, nearCity1);
 				}
 			}
 		}
@@ -259,38 +268,29 @@ public class ConsoleArrayCRUD {
 		return res;
 	}
 
-	private static City[] nearCity(String name, double distance) throws IOException {
-		City[] res = new City[0];
+	private static ArrayList<City> nearCity(String name, double distance) throws IOException {
+		ArrayList<City> res = new ArrayList<City>();
 		City ref = findByName(name);
 		if (ref == null) {
 			return res;
 		}
 		for (City city : cities) {
 			if (ref.distanceTo(city) < distance) {
-				res = add(res, city);
+				add(res, city);
 			}
 		}
 		return res;
 	}
 
-	private static City[] add(City[] cities, City city) {
-		City[] res = new City[cities.length + 1];
-		for (int i = 0; i != cities.length; ++i) {
-			res[i] = cities[i];
-		}
-		res[cities.length] = city;
-		return res;
+	private static void add(ArrayList<City> cities, City city) {
+		cities.add(city);
 	}
 
-	private static City[] remove(City[] cities, int idx) {
-		City[] res = new City[cities.length - ((idx >= 0 && idx < cities.length) ? 1 : 0)];
-		for (int src = 0, dst = 0; src != cities.length; ++src) {
-			if (src != idx) {
-				res[dst] = cities[src];
-				++dst;
-			}
+	private static void remove(ArrayList<City> cities, int idx) {
+		if (idx < cities.size()) {
+			cities.remove(idx);
 		}
-		return res;
+
 	}
 
 }

@@ -11,43 +11,39 @@ import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Scanner;
 
-public class ConsoleArrayCRUD {
+public class ConsoleHashMapCRUD {
 	private static NumberFormat numberFormat = NumberFormat.getInstance(Locale.FRENCH);
 	public static final String TEMP_DIR = "tempfiles";
 
-	private static City[] cities;
+	// private static City[] cities;
+	private static HashMap<String,City> cities;
 
 	private static String cityToString(City city) {
 		return city.getName() + ";" + numberFormat.format(city.getLatitude())
 				+ ";" + numberFormat.format(city.getLongitude());
 	}
 
-	private static void printCities(City[] cities) {
-		for (City city : cities) {
+	private static void printCities(HashMap<String,City> cities) {
+		for (City city : cities.values()) {
 			System.out.println(cityToString(city));
 		}
 	}
 
-	private static int findIdxByName(String name) throws IOException {
-		int res = -1;
-		for (int i = 0; i != cities.length && (res == -1); ++i) {
-			if (cities[i].getName().equalsIgnoreCase(name)) {
-				res = i;
-			}
-		}
-		return res;
-	}
 
 	private static City findByName(String name) throws IOException {
-		int idx = findIdxByName(name);
-		return idx == -1 ? null : cities[idx];
+		return ( cities.get(name));
 	}
 
 	private static void createCity(City city) throws IOException {
-		cities = add(cities, city);
+		// cities= add(cities, city);
+		cities.put(city.getName(), city);
+
 	}
 
 	private static void chrono(long start) {
@@ -56,6 +52,7 @@ public class ConsoleArrayCRUD {
 
 	private static void bench(long nb) throws IOException {
 		System.out.println("Bench mark times");
+		
 		long start = System.nanoTime();
 		for (int i = 0; i != nb; ++i) {
 			findByName("Rouen");
@@ -80,7 +77,7 @@ public class ConsoleArrayCRUD {
 
 	private static City closestCity(double lat, double lon) throws IOException {
 		City res = null;
-		for (City city : cities) {
+		for (City city : cities.values()) {
 			if ((res == null) || city.distanceTo(lat, lon) < res.distanceTo(lat, lon)) {
 				res = city;
 			}
@@ -91,12 +88,11 @@ public class ConsoleArrayCRUD {
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		String fileName = args.length > 0 ? args[0] : "NameLatLong.txt";
 		Path filePath = Paths.get(fileName);
-
-		System.out.println("Read cities Time : ");
+		System.out.println("Read cities Time");
 		long startTime = System.nanoTime();
-		cities = readCities(filePath);
 		chrono(startTime);
-
+		cities = readCities(filePath);
+		
 		if (args.length > 1) {
 			bench(Long.parseLong(args[1]));
 			return;
@@ -148,7 +144,7 @@ public class ConsoleArrayCRUD {
 			case 4: {
 				String name = input.nextLine();
 				double d = input.nextDouble();
-				City[] res = nearCity(name, d);
+				HashMap<String,City> res = nearCity(name, d);
 				printCities(res);
 				input.nextLine(); // flush line break
 				break;
@@ -159,7 +155,7 @@ public class ConsoleArrayCRUD {
 				input.nextLine(); // flush line break
 				String name2 = input.nextLine();
 				double d2 = input.nextDouble();
-				City[] res = nearCities(name1, d1, name2, d2);
+				HashMap<String,City> res = nearCities(name1, d1, name2, d2);
 				printCities(res);
 				input.nextLine(); // flush line break
 				break;
@@ -188,26 +184,28 @@ public class ConsoleArrayCRUD {
 		writeCities(cities, filePath);
 	}
 
-	private static City[] readCities(Path filePath) throws IOException {
-		City[] res = new City[0];
+	private static HashMap<String,City> readCities(Path filePath) throws IOException {
+		HashMap<String,City> res = new HashMap<String,City>();
 		try (BufferedReader br = Files.newBufferedReader(filePath)) {
 			br.readLine(); // skip header
 			for (String line = br.readLine(); line != null; line = br.readLine()) {
 				City tmp = readCity(line);
 				if (tmp != null) {
-					res = add(res, tmp);
+
+					add(res, tmp);
 				}
 			}
 		}
+		
 		return res;
 	}
 
-	private static void writeCities(City[] cities, Path filePath) throws IOException {
+	private static void writeCities(HashMap<String,City> cities, Path filePath) throws IOException {
 		Path tempDir = Files.createTempDirectory(TEMP_DIR);
 		Path tempFile = Files.createTempFile(tempDir, TEMP_DIR, ".tmp");
 		try (BufferedWriter writer = Files.newBufferedWriter(tempFile, StandardCharsets.UTF_8,
 				StandardOpenOption.WRITE)) {
-			for (City city : cities) {
+			for (City city : cities.values()) {
 				writer.write(cityToString(city) + "\n");
 			}
 		}
@@ -215,29 +213,25 @@ public class ConsoleArrayCRUD {
 	}
 
 	private static boolean updateCity(String name, double lat, double lon) throws IOException {
-		int idx = findIdxByName(name);
-		if (idx == -1) {
-			return false;
-		}
-		cities[idx] = new City(name, lat, lon);
+		
+		cities.replace(name, new City(name, lat, lon));
+		
 		return true;
 	}
 
 	private static boolean deleteCity(String name) throws IOException {
-		int idx = findIdxByName(name);
-		if (idx == -1) {
-			return false;
-		}
-		cities = remove(cities, idx);
+		
+		cities.remove(name);
+		
 		return true;
 	}
 
-	private static City[] nearCities(String name1, double d1, String name2, double d2) throws IOException {
-		City[] res = new City[0];
-		for (City nearCity1 : nearCity(name1, d1)) {
-			for (City nearCity2 : nearCity(name2, d2)) {
+	private static HashMap<String,City> nearCities(String name1, double d1, String name2, double d2) throws IOException {
+		HashMap<String,City> res = new HashMap<String,City>();
+		for (City nearCity1 : nearCity(name1, d1).values()) {
+			for (City nearCity2 : nearCity(name2, d2).values()) {
 				if (nearCity1.equals(nearCity2)) {
-					res = add(res, nearCity1);
+					add(res, nearCity1);
 				}
 			}
 		}
@@ -259,38 +253,22 @@ public class ConsoleArrayCRUD {
 		return res;
 	}
 
-	private static City[] nearCity(String name, double distance) throws IOException {
-		City[] res = new City[0];
+	private static HashMap<String,City> nearCity(String name, double distance) throws IOException {
+		HashMap<String,City> res = new HashMap<String,City>();
 		City ref = findByName(name);
 		if (ref == null) {
 			return res;
 		}
-		for (City city : cities) {
+		for (City city : cities.values()) {
 			if (ref.distanceTo(city) < distance) {
-				res = add(res, city);
+				add(res, city);
 			}
 		}
 		return res;
 	}
 
-	private static City[] add(City[] cities, City city) {
-		City[] res = new City[cities.length + 1];
-		for (int i = 0; i != cities.length; ++i) {
-			res[i] = cities[i];
-		}
-		res[cities.length] = city;
-		return res;
-	}
-
-	private static City[] remove(City[] cities, int idx) {
-		City[] res = new City[cities.length - ((idx >= 0 && idx < cities.length) ? 1 : 0)];
-		for (int src = 0, dst = 0; src != cities.length; ++src) {
-			if (src != idx) {
-				res[dst] = cities[src];
-				++dst;
-			}
-		}
-		return res;
+	private static void add(HashMap<String,City> cities, City city) {
+		cities.put(city.getName(),city);
 	}
 
 }
