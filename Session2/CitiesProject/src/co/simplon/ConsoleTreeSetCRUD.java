@@ -15,24 +15,24 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.TreeSet;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Scanner;
 
-public class ConsoleHashSetCRUD {
+public class ConsoleTreeSetCRUD {
 	private static NumberFormat numberFormat = NumberFormat.getInstance(Locale.FRENCH);
 	public static final String TEMP_DIR = "tempfiles";
 
 	// private static City[] cities;
-	private static HashSet<City> cities;
+	private static TreeSet<City> cities;
 
 	private static String cityToString(City city) {
 		return city.getName() + ";" + numberFormat.format(city.getLatitude())
 				+ ";" + numberFormat.format(city.getLongitude());
 	}
 
-	private static void printCities(HashSet<City> cities) {
+	private static void printCities(TreeSet<City> cities) {
 		for (City city : cities) {
 			System.out.println(cityToString(city));
 		}
@@ -42,6 +42,7 @@ public class ConsoleHashSetCRUD {
 	private static City findByName(String name) throws IOException {
 		Iterator<City> it = cities.iterator();
 		boolean cityFound = false;
+			
 		while (it.hasNext() && !cityFound ) {
 			City cityToReturn = it.next();
 			if (cityToReturn.compareTo(new City(name,0,0))==0) {
@@ -65,6 +66,8 @@ public class ConsoleHashSetCRUD {
 		System.out.println("Bench mark times");
 		
 		long start = System.nanoTime();
+		
+		/*
 		for (int i = 0; i != nb; ++i) {
 			findByName("Rouen");
 		}
@@ -78,6 +81,8 @@ public class ConsoleHashSetCRUD {
 		for (int i = 0; i != nb; ++i) {
 			closestCity(47., 3.);
 		}
+		*/
+		
 		chrono(start);
 		start = System.nanoTime();
 		for (int i = 0; i != nb; ++i) {
@@ -156,7 +161,7 @@ public class ConsoleHashSetCRUD {
 			case 4: {
 				String name = input.nextLine();
 				double d = input.nextDouble();
-				HashSet<City> res = nearCity(name, d);
+				TreeSet<City> res = nearCity(name, d);
 				printCities(res);
 				input.nextLine(); // flush line break
 				break;
@@ -167,7 +172,7 @@ public class ConsoleHashSetCRUD {
 				input.nextLine(); // flush line break
 				String name2 = input.nextLine();
 				double d2 = input.nextDouble();
-				HashSet<City> res = nearCities(name1, d1, name2, d2);
+				TreeSet<City> res = nearCities(name1, d1, name2, d2);
 				printCities(res);
 				input.nextLine(); // flush line break
 				break;
@@ -196,8 +201,8 @@ public class ConsoleHashSetCRUD {
 		writeCities(cities, filePath);
 	}
 
-	private static HashSet<City> readCities(Path filePath) throws IOException {
-		HashSet<City> res = new HashSet<City>();
+	private static TreeSet<City> readCities(Path filePath) throws IOException {
+		TreeSet<City> res = new TreeSet<City>();
 		try (BufferedReader br = Files.newBufferedReader(filePath)) {
 			br.readLine(); // skip header
 			for (String line = br.readLine(); line != null; line = br.readLine()) {
@@ -212,7 +217,7 @@ public class ConsoleHashSetCRUD {
 		return res;
 	}
 
-	private static void writeCities(HashSet<City> cities, Path filePath) throws IOException {
+	private static void writeCities(TreeSet<City> cities, Path filePath) throws IOException {
 		Path tempDir = Files.createTempDirectory(TEMP_DIR);
 		Path tempFile = Files.createTempFile(tempDir, TEMP_DIR, ".tmp");
 		try (BufferedWriter writer = Files.newBufferedWriter(tempFile, StandardCharsets.UTF_8,
@@ -224,8 +229,8 @@ public class ConsoleHashSetCRUD {
 		try {
 		Files.move(tempFile, filePath, StandardCopyOption.ATOMIC_MOVE);
 		} catch (AtomicMoveNotSupportedException e) {
-			Files.move(tempFile, filePath, StandardCopyOption.COPY_ATTRIBUTES);
-		}
+			Files.move(tempFile, filePath, StandardCopyOption.REPLACE_EXISTING);
+		} 
 	}
 
 	private static boolean updateCity(String name, double lat, double lon) throws IOException {
@@ -243,15 +248,26 @@ public class ConsoleHashSetCRUD {
 		return true;
 	}
 
-	private static HashSet<City> nearCities(String name1, double d1, String name2, double d2) throws IOException {
-		HashSet<City> res = new HashSet<City>();
+	private static TreeSet<City> nearCities(String name1, double d1, String name2, double d2) throws IOException {
+		TreeSet<City> res = new TreeSet<City>();
+		
+		/*
 		for (City nearCity1 : nearCity(name1, d1)) {
 			for (City nearCity2 : nearCity(name2, d2)) {
 				if (nearCity1.equals(nearCity2)) {
 					add(res, nearCity1);
 				}
 			}
+		}*/
+		
+		TreeSet<City> citiesNear2 = nearCity(name2,d2);
+		for (City nearCity1 : nearCity(name1,d1))
+		{
+			if (citiesNear2.contains(nearCity1)) {
+				add(res, nearCity1);
+			}
 		}
+		
 		return res;
 	}
 
@@ -270,8 +286,8 @@ public class ConsoleHashSetCRUD {
 		return res;
 	}
 
-	private static HashSet<City> nearCity(String name, double distance) throws IOException {
-		HashSet<City> res = new HashSet<City>();
+	private static TreeSet<City> nearCity(String name, double distance) throws IOException {
+		TreeSet<City> res = new TreeSet<City>();
 		City ref = findByName(name);
 		if (ref == null) {
 			return res;
@@ -284,7 +300,7 @@ public class ConsoleHashSetCRUD {
 		return res;
 	}
 
-	private static void add(HashSet<City> cities, City city) {
+	private static void add(TreeSet<City> cities, City city) {
 		cities.add(city);
 	}
 
