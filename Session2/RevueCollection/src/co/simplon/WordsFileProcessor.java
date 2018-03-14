@@ -79,7 +79,7 @@ public class WordsFileProcessor {
 				Integer wordCount = 0;
 				if (result.containsKey(word)) {
 					wordCount = result.get(word);
-					result.remove(word);
+					result.remove(word);					
 				}
 				wordCount++;
 				result.put(word, wordCount);
@@ -123,7 +123,7 @@ public class WordsFileProcessor {
 
 		String userChoice = "";
 		while (!userChoice.equals("0")) {
-			
+
 			System.out.println();
 			System.out.println("*** Words file processor *** ");
 			System.out.println("1 -> Find common words of " + fileName1 + " and " + fileName2);
@@ -161,14 +161,14 @@ public class WordsFileProcessor {
 					System.out.println("Words counted in " + fileName1 + " : " + mapResult.size());
 
 					String subMenuChoice = "";
-					while (! (subMenuChoice.equals("1") || subMenuChoice.equals("2"))) {
+					while (!(subMenuChoice.equals("1") || subMenuChoice.equals("2"))) {
 						System.out.println();
 						System.out.println("Result Display : ");
 						System.out.println("1 -> Order by Words");
 						System.out.println("2 -> Order by descending words count");
 						System.out.print("Your choice: ");
 						subMenuChoice = scanner.nextLine();
-						switch(subMenuChoice) {
+						switch (subMenuChoice) {
 						case "1":
 							wP.displayMapOrderByKey(mapResult);
 							break;
@@ -179,7 +179,7 @@ public class WordsFileProcessor {
 							System.out.println("Please select a value in [1-2]");
 						}
 					}
-					
+
 				} catch (Exception e) {
 					System.out.println(e.getMessage());
 				}
