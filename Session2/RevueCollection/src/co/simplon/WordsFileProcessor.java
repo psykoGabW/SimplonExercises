@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,7 +80,7 @@ public class WordsFileProcessor {
 				Integer wordCount = 0;
 				if (result.containsKey(word)) {
 					wordCount = result.get(word);
-					result.remove(word);					
+					result.remove(word);
 				}
 				wordCount++;
 				result.put(word, wordCount);
@@ -100,8 +101,24 @@ public class WordsFileProcessor {
 	public void displayMapOrderByValue(Map<String, Integer> mapToDisplay) {
 		// Sort of keys by values
 		List<Entry<String, Integer>> list = new ArrayList<>(mapToDisplay.entrySet());
+
+		// Lambda comparator writing Java 8+
 		list.sort(
 				(o1, o2) -> -1 * (o1.getValue().compareTo(o2.getValue())));
+
+		// Classical comparator writing
+		list.sort(
+				(new Comparator<Entry<String, Integer>>() {
+					@Override
+					public int compare(Entry<String, Integer> o1, Entry<String, Integer> o2) {
+						if (o1.getValue().compareTo(o2.getValue())==0) {
+							return o1.getKey().compareTo(o2.getKey());
+						}
+						return o1.getValue().compareTo(o2.getValue());
+					}
+				}).reversed()
+				);
+
 		for (Entry<String, Integer> entry : list) {
 			System.out.println(entry.getKey() + " : " + entry.getValue());
 		}
