@@ -27,21 +27,44 @@ class CityDBO {
 				);		
 	}
 
-	public String getUpdateQuery() {
-		return(
-				String.format(Locale.US, "UPDATE city SET name = '%s', countryCode = '%s', latitude = %f, longitude= %f WHERE id=%d",
-						name, 
-						countryCode,
-						latitude,
-						longitude,
-						id)
-				);		
-	}
+	
 	
 	public void setId(Long id) {
 		this.id = id;
 	}
 	
+	public String getCountryCode() {
+		return countryCode;
+	}
+
+	public void setCountryCode(String countryCode) {
+		this.countryCode = countryCode;
+	}
+
+	public double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
+
+	public double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
 	public boolean hasBeenSaved() {
 		return (id!=null);
 	}

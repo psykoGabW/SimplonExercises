@@ -25,3 +25,11 @@ DELETE FROM City WHERE id=3;
 
 CREATE INDEX idx_city_name_country ON city (name, countryCode);
 CREATE INDEX idx_city_lat_long ON city(latitude, longitude);
+
+ALTER TABLE city
+ADD CONSTRAINT city_check_latitude
+CHECK (latitude between -90.0 AND 90.0);
+
+ALTER TABLE city
+ADD CONSTRAINT city_check_longitude
+CHECK (longitude BETWEEN -180 AND 180);
