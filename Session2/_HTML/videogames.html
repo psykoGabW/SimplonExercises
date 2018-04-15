@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>GWI store</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+  <header>
+    <img height="150px" src="./img/header.gif" alt="Scratch searching" />
+  </header>
+  <nav>
+    <a href="customers.html">Customers management</a>
+    <a href="videogames.html" class="selected">Videogames management</a>
+  </nav>
+  <div id="main">
+    <div id="left_form">
+      <form>
+        <table id="customer_form">
+          <thead>
+            <tr>
+              <th colspan=4>Customer Information</th>
+            </tr>
+          </thead>
+          <tr>
+            <td><label for="firstname">Firstname</label></td>
+            <td><input type="text" id="firstname" name="firstname" /></td>
+            <td><label for="credits">Credits</label></td>
+            <td><input type="number" id="credits" name="credits" /></td>
+          </tr>
+          <tr>
+            <td><label for="lastname">Lastname</label></td>
+            <td><input type="text" id="lastname" name="lastname" /></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><label for="knickname">Knickname</label></td>
+            <td><input type="text" name="knickname" id="knickname" /></td>
+            <td><label for="birthdate">Birthdate</label></td>
+            <td style="float: right;"><input type="date" id="birthdate" name="birthdate" /></td>
+          </tr>
+          <tr>
+            <td><label for="email">Email</label></td>
+            <td colspan=3><input type="Email" name="email" id="email" /></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td style="float: right;"><button type="submit" name="addCustomerButton">Add</button></td>
+          </tr>
+        </table>
+      </form>
+    </div>
+
+    <div id="right_form">
+      <table id="customers_list">
+        <thead>
+          <th>Id</th>
+          <th>Knickname</th>
+          <th>Firstname</th>
+          <th>Lastname</th>
+          <th>Birthdate</th>
+          <th>Credits</th>
+          <th>Email</th>
+          <th>Select</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>KnickName1</td>
+            <td>John</td>
+            <td>Rambo</td>
+            <td>Birthdate</td>
+            <td>10.00</td>
+            <td>j.rambo@gmail.vn</td>
+            <td text-align="center">
+              <InPut type="checkbox" />
+            </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Baffeur</td>
+            <td>Jean-Claude</td>
+            <td>Youplaboum</td>
+            <td>10/10/1955</td>
+            <td>15.00</td>
+            <td>jcvd@gmail.be</td>
+            <td text-align="center">
+              <InPut type="checkbox" checked/>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <footer>
+    <a href="gabriel.wisniewski@gmail.com">Contact us</a>|
+    <a href="simplon.co">Simplon-co</a>
+  </footer>
+
+</body>
+
+</html>

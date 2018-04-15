@@ -1,0 +1,24 @@
+h1 {
+  color: blue;
+  text-align: center;
+}
+
+img{
+  text-align: center;
+}
+
+.blue-title{
+  color:blue;
+}
+
+.red-title{
+  color:red;
+}
+
+p {
+  border: 2px solid black;
+  margin: auto;
+  padding: 10px 5px;
+  text-align: center;
+  width: 500px;
+}
