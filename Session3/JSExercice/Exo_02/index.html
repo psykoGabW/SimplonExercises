@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width"/>
+  <title>GWI store</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+  <script src="./script.js"></script>
+  <header>
+    <img src="./img/header.gif" alt="Scratch searching" />
+  </header>
+  <nav>
+    <a href="customers.html" class="selected">Customers management</a>
+    <a href="videogames.html">Videogames management</a>
+  </nav>
+  <div id="main">
+    <section id="customer_data">
+      <form id="customer_form">
+        <table>
+          <thead>
+            <tr>
+              <th colspan=4>Customer Information</th>
+            </tr>
+          </thead>
+          <tr>
+            <td><label for="firstname">Firstname</label></td>
+            <td><input type="text" id="firstname" name="firstname" /></td>
+            <td><label for="credits">Credits</label></td>
+            <td><input type="number" step="0.01" id="credits" name="credits" /></td>
+          </tr>
+          <tr>
+            <td><label for="lastname">Lastname</label></td>
+            <td><input type="text" id="lastname" name="lastname" /></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><label for="knickname">Knickname</label></td>
+            <td><input type="text" name="knickname" id="knickname" /></td>
+            <td><label for="birthdate">Birthdate</label></td>
+            <td style="float: right;"><input type="date" id="birthdate" name="birthdate" /></td>
+          </tr>
+          <tr>
+            <td><label for="email">Email</label></td>
+            <td colspan=3><input type="Email" name="email" id="email" /></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td style="float: right;"><button type="submit" onsubmit="getCustomerFormSubmit" name="addCustomerButton">Add</button></td>
+          </tr>
+        </table>
+
+      </form>
+    </section>
+    <section id="customers_database">
+      <table id="customers_list">
+        <thead>
+          <th>Id</th>
+          <th>Knickname</th>
+          <th>Firstname</th>
+          <th>Lastname</th>
+          <th>Birthdate</th>
+          <th>Credits</th>
+          <th>Email</th>
+          <th>Select</th>
+        </thead>
+        <tbody class="tbody_bicolor">
+          <tr>
+            <td>1</td>
+            <td>KnickName1</td>
+            <td>John</td>
+            <td>Rambo</td>
+            <td>Birthdate</td>
+            <td>10.00</td>
+            <td>j.rambo@gmail.vn</td>
+            <td class="td_checkbox">
+              <InPut type="checkbox" />
+            </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Baffeur</td>
+            <td>Jean-Claude</td>
+            <td>Youplaboum</td>
+            <td>10/10/1955</td>
+            <td>15.00</td>
+            <td>jcvd@gmail.be</td>
+            <td class="td_checkbox">
+              <InPut type="checkbox" checked/>
+            </td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Baffeur</td>
+            <td>Jean-Claude</td>
+            <td>Youplaboum</td>
+            <td>10/10/1955</td>
+            <td>15.00</td>
+            <td>jcvd@gmail.be</td>
+            <td class="td_checkbox">
+              <InPut type="checkbox" checked/>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section id="customer_transactions">
+      <table>
+        <thead class="thead_scrollable_table">
+          <th>Id</th>
+          <th>Transaction date</th>
+          <th>Credits bought</th>
+        </thead>
+        <tbody class="tbody_bicolor tbody_scrollable_table">
+          <tr>
+            <td>1</td>
+            <td>11/03/2018 10:00</td>
+            <td>100.00
+              <td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>20/03/2018 13:20</td>
+            <td>45.00
+              <td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>22/03/2018 11:50</td>
+            <td>05.00
+              <td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>22/03/2018 11:55</td>
+            <td>05.00
+              <td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>22/03/2018 13:05</td>
+            <td>05.00
+              <td>
+          </tr>
+          <tr>
+            <td>6</td>
+          <td>22/03/2018 16:24</td>
+          <td>9.99</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section id="customer_games">
+      <table id="customer_library" class="table_scrollable">
+        <thead>
+          <th>Id</th>
+          <th>Purchased videogame</th>
+          <th>Price</th>
+          <th>Purchase date</th>
+          <th>Publisher</th>
+          <th>PEGI rate</th>
+          <th>Short description</th>
+          <th>Link</th>
+        </thead>
+      <tbody class="tbody_bicolor">
+        <tr>
+          <td>1</td>
+          <td>Pacman</td>
+          <td>8.99</td>
+          <td>15/02/2018 13:11</td>
+          <td>Namco</td>
+          <td>3</td>
+          <td>Hunting ghost and get out !</td>
+          <td><a href="">Pacman</a></td>
+        </tr>
+      </tbody>
+      </table>
+
+    </section>
+  </div>
+  <footer>
+    <a href="gabriel.wisniewski@gmail.com">Contact us</a>|
+    <a href="simplon.co">Simplon-co</a>
+  </footer>
+
+</body>
+
+</html>

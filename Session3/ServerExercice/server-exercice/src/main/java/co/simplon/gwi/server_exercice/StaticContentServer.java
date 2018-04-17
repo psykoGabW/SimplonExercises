@@ -14,7 +14,8 @@ public class StaticContentServer {
          // The filesystem paths we will map
         // String homePath = System.getProperty("user.home");
         // String homePath = "file:///D:/GWI/CoursSimplon/GitHubGWI/";
-        String homePath = System.getenv("WEBSITE_HOME");
+        //String homePath = System.getenv("WEBSITE_HOME");
+        String homePath = "file:///D:/GWI/CoursSimplon/GitHubGWI/SimplonExercises/Session3/JSExercice/Exo_02/";
         
         String pwdPath = System.getProperty("user.dir");
         

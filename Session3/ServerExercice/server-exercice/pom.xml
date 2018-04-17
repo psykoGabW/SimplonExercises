@@ -43,46 +43,7 @@
 			<version>42.2.2</version>
 		</dependency>
 
-		<!-- START OF GATLING DEPENDENCIES -->
-		<!-- Gatling is using scala. We need scala-compiler in order to compile 
-			Gatling tests -->
-		<!-- https://mvnrepository.com/artifact/org.scala-lang/scala-compiler -->
-		<dependency>
-			<groupId>org.scala-lang</groupId>
-			<artifactId>scala-compiler</artifactId>
-			<version>2.12.5</version>
-		</dependency>
-
-		<!-- This dependency is required to execute galting tests -->
-		<!-- https://mvnrepository.com/artifact/org.scala-lang/scala-library -->
-
-		<dependency>
-			<groupId>org.scala-lang</groupId>
-			<artifactId>scala-library</artifactId>
-			<version>2.12.5</version>
-		</dependency>
-
-		<dependency>
-			<groupId>io.gatling</groupId>
-			<artifactId>gatling-core</artifactId>
-			<version>2.3.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>io.gatling</groupId>
-			<artifactId>gatling-app</artifactId>
-			<version>2.3.1</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/io.gatling.highcharts/gatling-charts-highcharts -->
-		<dependency>
-			<groupId>io.gatling.highcharts</groupId>
-			<artifactId>gatling-charts-highcharts</artifactId>
-			<version>2.3.1</version>
-		</dependency>
-
-		<!-- END OF GATLING PLUGIN DEPENDENCIES -->
-
+	
 	</dependencies>
 	<build>
 		<plugins>
@@ -96,27 +57,7 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-
-			<plugin>
-				<!-- https://mvnrepository.com/artifact/io.gatling/gatling-maven-plugin -->
-
-				<groupId>io.gatling</groupId>
-				<artifactId>gatling-maven-plugin</artifactId>
-				<version>2.2.4</version>
-
-				<configuration>
-					<configFolder>${project.basedir}/src/test/resources</configFolder>
-				</configuration>
-
-				<executions>
-					<execution>
-						<phase>test</phase>
-						<goals>
-							<goal>execute</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
+ 	
+    	</plugins>
 	</build>
 </project>
