@@ -19,7 +19,7 @@
   </nav>
   <div id="main">
     <section id="customer_data">
-      <form id="customer_form">
+      <form method="post" id="customer_form">
         <table>
           <thead>
             <tr>
@@ -52,7 +52,9 @@
             <td></td>
             <td></td>
             <td></td>
-            <td style="float: right;"><button type="submit" onsubmit="getCustomerFormSubmit" name="addCustomerButton">Add</button></td>
+            <td style="float: right;">
+              <button type="submit" onsubmit="getCustomerFormSubmit" name="addCustomerButton">Add</button>
+            </td>
           </tr>
         </table>
 

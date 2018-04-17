@@ -1,11 +1,13 @@
-'use strict';
 
 function submitCustomerForm(event) {
-  event.preventDefault();
+
 
   let customerDetails = customerInformations("customer_form");
   addCustomerRow(customerDetails, "customers_list");
+
+  // Those 2 lines mmust been commented for Gatling test
   cleanForm("customer_form");
+  event.preventDefault();
 
 }
 
