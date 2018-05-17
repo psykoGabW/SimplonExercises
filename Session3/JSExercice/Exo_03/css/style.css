@@ -1,0 +1,6 @@
+#menu ul li a{
+  @include waves-effect;
+  @include waves-light;
+  color : white;
+  width: 100%;
+}
