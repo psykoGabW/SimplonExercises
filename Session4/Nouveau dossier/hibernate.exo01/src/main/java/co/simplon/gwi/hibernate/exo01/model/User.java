@@ -72,7 +72,7 @@ public class User {
 	}
 
 	public String toString() {
-		return "User :{ id= " + id + "\n name= " + name + "\n nb momunents" + monuments.size() + "\n}";
+		return "User :{ id= " + id + " - name= " + name + " - nb momunents : " + monuments.size() + "}";
 	}
 	
 	public Long getId() {
