@@ -3,7 +3,7 @@ package co.simplon.gwi.spring.exo01;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages= "co.simplon.gwi.spring.exo01")
+@SpringBootApplication(scanBasePackages= {"co.simplon.gwi.spring.exo01","co.simplon.repository"})
 public class SpringTestApplication {
 
 	public static void main(String[] args) {
