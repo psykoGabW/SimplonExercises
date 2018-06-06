@@ -1,0 +1,8 @@
+.userDetails{
+    display: flex;
+    flex: 2;
+    flex-direction: column;
+    align-items: center;
+    background-color: azure;
+    width: 50%;
+}

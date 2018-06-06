@@ -1,0 +1,5 @@
+<section class="userDetails" *ngIf="isCurrentUserSelected()">
+  <h2>{{currentUser.name}}</h2>
+  <h3>{{currentUser.jobTitle}}</h3>
+  <img [src]="currentUser.image" />
+</section>

@@ -1,0 +1,9 @@
+<section id="userList">
+    <ul>
+      <!-- <li *ngFor="let user of users" (click)="setCurrentUser(user);"> -->
+      <li *ngFor="let user of users">
+        <!-- <a (click)="selectUser(user.id);" href="#">{{user.name}}</a> -->
+        <a (click)="selectUserWithPreventDefault(user.id, $event);" href>{{user.name}}</a> <!-- Cette méthode évite l'utilisation de l'ancre et l'intégration de cette dernière dans la route. Attention un prevent Default doit être fait dans la méthode appelée-->
+      </li>
+    </ul>
+  </section>

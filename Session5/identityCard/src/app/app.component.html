@@ -1,0 +1,63 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center">
+  <h1>
+    Welcome to {{ title }}!
+  </h1>
+  <label for="connexionCheckBox">
+    Connexion:
+  </label>
+  <input id="connexionCheckBox" type="checkbox" [(ngModel)]="userIsConnected">
+</div>
+<div *ngIf="!userIsConnected" style="text-align: center">
+  <h4 style="color: red">Connecte toi coco !</h4>
+</div>
+
+<div *ngIf="userIsConnected" class="mainContainer" >
+  <section class="formulaire">
+    <div class="coupleInput">
+      <label for="{{ID_INPUT_NAME}}">Please input user name : </label>
+      <input id="{{ID_INPUT_NAME}}" type="text" (change)="setUserData($event)" value="{{user.name}}">
+    </div>
+
+    <div class="coupleInput">
+      <label for="{{ID_INPUT_JOBTITLE}}">Please input job title : </label>
+      <input id="{{ID_INPUT_JOBTITLE}}" type="text" (input)="user.jobTitle = inputJobTitle.value;" value="{{user.jobTitle}}" #inputJobTitle/>
+    </div>
+    <div class="coupleInput">
+      <label for="{{ID_INPUT_IMGURL}}">Please input an image url : </label>
+      <input id="{{ID_INPUT_IMGURL}}" type="text" (change)="setUserData($event)">
+    </div>
+    <div class="coupleInput">
+      <label for={{ID_INPUT_AGE}}>Please input user age : </label>
+      <input id="{{ID_INPUT_AGE}}" type="text" [(ngModel)]="this.user.age">
+    </div>
+    <div>
+      <label for="urgentCheckBox">Urgent</label>
+      <input id="urgentCheckBox" type="checkbox" [(ngModel)]="textColorUrgent" #urgentCheckBox/>
+    </div>
+  </section>
+  <section class="id-card">
+    <div class="txt-card" [style.color]="(textColorUrgent?'red':'blue')">
+      <h2>{{this.user.name}}</h2>
+      <h4 [style.color]="(urgentCheckBox.checked?'orange':'blue')" >{{this.user.jobTitle}}</h4>
+      {{this.user.age}}
+    </div>
+
+    <img class="imgLink-card" src="{{this.user.imgUrl}}" />
+
+  </section>
+</div>
+
+<!-- <h2>Here are some links to help you start: </h2>
+ <ul>
+  <li>
+    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
+  </li>
+  <li>
+    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
+  </li>
+  <li>
+    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
+  </li>
+</ul>
+-->

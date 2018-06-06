@@ -1,0 +1,4 @@
+.mainComponent{
+    display: flex;
+    flex-direction: row;
+}
