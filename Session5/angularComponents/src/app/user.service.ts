@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
+import { IUser } from './IUser';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  users = [
+  users: IUser[] = [
     {
       'id': 0,
       'name': 'Aisha Eichmann',
@@ -24,15 +26,24 @@ export class UserService {
       'jobTitle': 'Dynamic Markets Planner'
     }
   ];
-  currentUser;
+  currentUser: IUser;
+
+  // Observable string sources
+  private userUpdate = new Subject<IUser>();
+
+  // Observable string streams
+  public userUpdateAnnounce = this.userUpdate.asObservable();
 
   setCurrentUser(user) {
+    console.log('Coucou');
     this.currentUser = user;
+    this.userUpdate.next(this.currentUser);
   }
 
   selectUser(userId: number) {
+    console.log('UserService.selectUser: userId = ' + userId);
     if (userId >= 0 && userId < this.users.length) {
-      this.currentUser = this.users[userId];
+      this.setCurrentUser(this.users[userId]);
     } else {
       this.currentUser = null;
     }

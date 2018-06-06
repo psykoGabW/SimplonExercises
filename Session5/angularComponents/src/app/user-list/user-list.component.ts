@@ -9,11 +9,10 @@ import { UserService } from '../user.service';
 })
 export class UserListComponent implements OnInit {
 
-  private userService: UserService;
-  users;
+  // private userService: UserService;
+  public users;
 
-  constructor(userService: UserService) {
-    this.userService = userService;
+  constructor(private userService: UserService) {
   }
 
   ngOnInit() {

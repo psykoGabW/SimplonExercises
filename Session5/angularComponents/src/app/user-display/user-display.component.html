@@ -1,5 +1,6 @@
-<section class="userDetails" *ngIf="isCurrentUserSelected()">
-  <h2>{{currentUser.name}}</h2>
-  <h3>{{currentUser.jobTitle}}</h3>
-  <img [src]="currentUser.image" />
+<!-- <section class="userDetails" *ngIf="isCurrentUserSelected()"> -->
+<section class="userDetails" *ngIf="userToDisplay">
+  <h2>{{userToDisplay.name}}</h2>
+  <h3>{{userToDisplay.jobTitle}}</h3>
+  <img [src]="userToDisplay.image" alt="User image"/>
 </section>
