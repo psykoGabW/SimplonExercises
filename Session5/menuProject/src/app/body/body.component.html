@@ -1,0 +1,8 @@
+<section id="app-body" [ngSwitch]="getActiveMenu()">
+ 
+    <div *ngSwitchCase="'Menu 1'"><p>Contenu Menu 1</p></div>
+    <div *ngSwitchCase="'Menu 2'"><p>Contenu Menu 2</p></div>
+    <div *ngSwitchCase="'Menu 3'"><p>Contenu Menu 3</p></div>
+    <p *ngSwitchDefault>Please select a menu option</p>
+  
+</section>

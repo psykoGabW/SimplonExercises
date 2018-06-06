@@ -1,0 +1,9 @@
+.inactiveMenu {
+margin: 0.5em;
+background-color: rgb(222, 255, 212);    
+}
+
+.activeMenu {
+    margin: 0.5em;
+    background-color: rgba(112, 255, 112, 0.822);
+}
