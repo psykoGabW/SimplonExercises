@@ -1,0 +1,13 @@
+/* #formsection, #formsection:only-child {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+mat-checkbox, mat-form-field {
+    display: flex;
+    flex: 1;
+    margin-left: 1em;
+    align-items: center;
+} */

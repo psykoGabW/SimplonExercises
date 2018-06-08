@@ -1,0 +1,9 @@
+<section>
+  <h1>Realisations</h1>
+  <div *ngFor="let real of realisations">
+    <h2>id: {{real.id}} <a routerLink="./{{real.id}}">{{real.name}}</a></h2>
+    <img [src]="real.image"/>
+    <p>{{real.description}}</p>
+  </div>
+  <img src="../../assets/MadeMan2.png"/>
+</section>
