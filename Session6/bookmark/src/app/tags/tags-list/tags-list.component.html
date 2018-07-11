@@ -1,0 +1,15 @@
+
+<mat-list>
+  <mat-list-item>
+  <h1>
+    Tags
+  </h1>
+  <button mat-icon-button routerLink="/tag/create"><mat-icon color="'white'">add</mat-icon></button>    
+  </mat-list-item>
+  <mat-list-item *ngFor="let tag of tags$ | async">
+    <h4 mat-line>{{tag.label}}</h4>
+    <button mat-icon-button routerLink="/tag/form/{{tag.id}}"><mat-icon color='primary'>edit</mat-icon></button>
+    <button mat-icon-button (click)="delete(tag)"><mat-icon color='primary'>delete</mat-icon></button>    
+    <p mat-line>{{tag?.author?.firstName}} {{tag?.author?.lastName}}</p>
+  </mat-list-item>  
+</mat-list>

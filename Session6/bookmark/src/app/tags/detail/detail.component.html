@@ -1,0 +1,6 @@
+<p>
+   {{tag?.label}} 
+</p>
+<mat-list *ngIf="tag">
+    <mat-list-item *ngFor='let b of tag.bookmarks' >{{b?.description}}</mat-list-item>
+</mat-list>
